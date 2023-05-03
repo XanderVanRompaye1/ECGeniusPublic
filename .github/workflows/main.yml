@@ -11,18 +11,18 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
+      uses: github/codeql-action/init@v2
       with:
         languages: 'python'
 
     - name: Create CodeQL database
-      uses: github/codeql-action/analyze@v1
+      uses: github/codeql-action/analyze@v2
       with:
         query: 'python-code-scanning/myquery.ql'
         database: mydatabase
 
     - name: Run CodeQL query
-      uses: github/codeql-action/analyze@v1
+      uses: github/codeql-action/analyze@v2
       with:
         query: 'codeql/myquery.ql'
         database: mydatabase
