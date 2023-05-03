@@ -1,0 +1,36 @@
+name: My Workflow
+
+on: [push]
+
+jobs:
+  run-query:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: 'python'
+
+    - name: Create CodeQL database
+      uses: github/codeql-action/analyze@v1
+      with:
+        query: 'python-code-scanning/myquery.ql'
+        database: mydatabase
+
+    - name: Run CodeQL query
+      uses: github/codeql-action/analyze@v1
+      with:
+        query: 'codeql/myquery.ql'
+        database: mydatabase
+        format: json
+        output: results.json
+
+    - name: Upload results as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: My Query Results
+        path: results.json
