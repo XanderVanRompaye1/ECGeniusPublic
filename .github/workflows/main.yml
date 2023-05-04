@@ -1,36 +1,37 @@
 name: My Workflow
 
-on: [push]
+on:
+  push:
+    branches: [ main ]  # Set the branch you want to trigger the action on
 
 jobs:
   run-query:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: 'python'
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: 'python'
 
-    - name: Create CodeQL database
-      uses: github/codeql-action/analyze@v2
-      with:
-        query: 'python-code-scanning/myquery.ql'
-        database: mydatabase
+      - name: Analyze code with CodeQL
+        uses: github/codeql-action/analyze@v2
+        with:
+          query: 'python-code-scanning/myquery.ql'
+          database: mydatabase
+          # You can specify additional inputs here if needed, such as 'threads'
 
-    - name: Run CodeQL query
-      uses: github/codeql-action/analyze@v2
-      with:
-        query: 'codeql/myquery.ql'
-        database: mydatabase
-        format: json
-        output: results.json
+      - name: Upload CodeQL results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: codeql-results.sarif
+          # You can specify additional inputs here if needed, such as 'tool_name'
 
-    - name: Upload results as artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: My Query Results
-        path: results.json
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: CodeQL results
+          path: codeql-results.sarif
