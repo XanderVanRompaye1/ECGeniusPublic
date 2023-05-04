@@ -1,32 +1,20 @@
-name: Generate JSON file from CodeQL query
+name: My Workflow
 
-on:
-  push:
-    branches: [ main ]  # Set the branch you want to trigger the action on
+on: [push]
 
 jobs:
-  generate-json:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install CodeQL CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install codeql
-
-      - name: Create CodeQL database
-        run: |
-          codeql database create mydatabase --language=python .  # Replace 'python' with your desired language
-
-      - name: Run CodeQL query and generate JSON file
-        run: |
-          codeql query run codeql/myquery.ql --database=mydatabase --output=json > results.json 
-
-      - name: Upload JSON file
-        uses: actions/upload-artifact@v2
-        with:
-          name: CodeQL query results
-          path: results.json
+    - name: Update packages
+      run: sudo apt-get update
+    - name: Install CodeQL
+      uses: github/codeql-action/setup@v2
+      with:
+        languages: python
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Build and test
+      run: |
+        codeql database create mydatabase --language=python --source-root=./myproject
+        codeql query run codeql/myquery.ql --database=mydatabase --output=json > results.json
