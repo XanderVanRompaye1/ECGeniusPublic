@@ -2,7 +2,7 @@
  * @id codeql/custom-queries/pythonfilenames.ql
  * @name get filenames 
  * @description get filenames
- * @kind getting data
+ * @kind problem
  * @tags empty
  *       Xander
  */
