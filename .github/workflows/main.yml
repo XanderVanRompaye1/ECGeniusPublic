@@ -20,7 +20,11 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
-          queries: ./codeql/myquery.ql
-          
-        
-
+          languages: ${{ matrix.language }}
+          config: |
+            disable-default-queries: true
+            queries:
+              - uses: ./codeql/myquery.ql
+            paths-ignore: 
+              - '.streamlit'
+              - '*.md'
