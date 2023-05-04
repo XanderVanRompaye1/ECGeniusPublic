@@ -12,20 +12,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: 'python'
+      - name: Install CodeQL CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install codeql
 
       - name: Create CodeQL database
-        uses: github/codeql-action/analyze@v2
-        with:
-          query: 'codeql/myquery.ql'
-          database: mydatabase
+        run: |
+          codeql database create mydatabase --language=python .  # Replace 'python' with your desired language
 
       - name: Run CodeQL query and generate JSON file
         run: |
-          codeql query run codeql/myquery.ql --database=mydatabase --output=json > results.json
+          codeql query run codeql/myquery.ql --database=mydatabase --output=json > results.json 
 
       - name: Upload JSON file
         uses: actions/upload-artifact@v2
