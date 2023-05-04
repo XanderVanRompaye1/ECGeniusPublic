@@ -20,7 +20,7 @@ jobs:
       - name: Generate JSON file
         run: |
           codeql database create mydatabase --language=python .  # Replace 'python' with your desired language
-          codeql query run /path/to/your/query.ql --database=mydatabase --output=json > results.json  # Replace '/path/to/your/query.ql' with the path to your query
+          codeql query run codeql/myquery.ql --database=mydatabase --output=json > results.json 
 
       - name: Upload JSON file
         uses: actions/upload-artifact@v2
