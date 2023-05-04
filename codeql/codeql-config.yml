@@ -1,0 +1,10 @@
+name: "My CodeQL config"
+
+disable-default-queries: true
+
+queries:
+  - uses: ./codeql/myquery.ql
+
+paths-ignore: 
+  - '.streamlit'
+  - '*.md'
