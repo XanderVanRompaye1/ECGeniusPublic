@@ -5,27 +5,25 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  CodeQL-Build:
     runs-on: ubuntu-latest
+
+    permissions:
+      # required for all workflows
+      security-events: write
+
     steps:
-      - name: Update packages
-        run: sudo apt-get update
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Install CodeQL
-        uses: github/codeql-action/setup@v2
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
         with:
-          languages: python
+          languages: ${{ matrix.language }}
+          config: |
+            disable-default-queries: true
+          queries: codeql/myquery.ql
+          
+        
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Build and test
-        run: |
-          codeql database create mydatabase --language=python --source-root=./myproject
-          codeql query run codeql/myquery.ql --database=mydatabase --output=json > results.json
-
-      - name: Upload results
-        uses: actions/upload-artifact@v2
-        with:
-          name: codeql-results
-          path: results.json
