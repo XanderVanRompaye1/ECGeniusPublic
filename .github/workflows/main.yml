@@ -1,11 +1,11 @@
-name: My Workflow
+name: Generate JSON file from CodeQL query
 
 on:
   push:
     branches: [ main ]  # Set the branch you want to trigger the action on
 
 jobs:
-  run-query:
+  generate-json:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,21 +17,13 @@ jobs:
         with:
           languages: 'python'
 
-      - name: Analyze code with CodeQL
-        uses: github/codeql-action/analyze@v2
-        with:
-          query: 'python-code-scanning/myquery.ql'
-          database: mydatabase
-          # You can specify additional inputs here if needed, such as 'threads'
+      - name: Generate JSON file
+        run: |
+          codeql database create mydatabase --language=python .  # Replace 'python' with your desired language
+          codeql query run /path/to/your/query.ql --database=mydatabase --output=json > results.json  # Replace '/path/to/your/query.ql' with the path to your query
 
-      - name: Upload CodeQL results
-        uses: github/codeql-action/upload-sarif@v2
-        with:
-          sarif_file: codeql-results.sarif
-          # You can specify additional inputs here if needed, such as 'tool_name'
-
-      - name: Upload artifacts
+      - name: Upload JSON file
         uses: actions/upload-artifact@v2
         with:
-          name: CodeQL results
-          path: codeql-results.sarif
+          name: CodeQL query results
+          path: results.json
