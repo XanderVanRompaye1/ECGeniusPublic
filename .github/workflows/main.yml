@@ -21,10 +21,4 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
-          config: |
-            disable-default-queries: true
-            queries:
-              - uses: ./codeql/myquery.ql
-            paths-ignore: 
-              - '.streamlit'
-              - '*.md'
+          config-file: ./codeql/codeql-config.yml
