@@ -15,8 +15,6 @@ jobs:
         uses: github/codeql-action/setup@v2
         with:
           languages: python
-      - name: Checkout code
-        uses: actions/checkout@v2
 
       - name: Checkout code
         uses: actions/checkout@v2
