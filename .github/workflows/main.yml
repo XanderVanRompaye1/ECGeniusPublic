@@ -1,20 +1,31 @@
-name: My Workflow
+name: CustomCodeQL
 
-on: [push]
+on:
+  push:
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Update packages
-      run: sudo apt-get update
-    - name: Install CodeQL
-      uses: github/codeql-action/setup@v2
-      with:
-        languages: python
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Build and test
-      run: |
-        codeql database create mydatabase --language=python --source-root=./myproject
-        codeql query run codeql/myquery.ql --database=mydatabase --output=json > results.json
+      - name: Update packages
+        run: sudo apt-get update
+
+      - name: Install CodeQL
+        uses: github/codeql-action/setup@v2
+        with:
+          languages: python
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and test
+        run: |
+          codeql database create mydatabase --language=python --source-root=./myproject
+          codeql query run codeql/myquery.ql --database=mydatabase --output=json > results.json
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeql-results
+          path: results.json
