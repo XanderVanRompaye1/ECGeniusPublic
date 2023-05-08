@@ -28,7 +28,7 @@ jobs:
 
       - name: Create CodeQL database
         run: |
-          codeql database create my-database --language=python --source-root=./src
+          codeql database create my-database --language=python --source-root=./
 
       - name: Run custom queries
         run: |
