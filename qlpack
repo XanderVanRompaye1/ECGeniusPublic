@@ -1,0 +1,5 @@
+name: codeql/mycustomqueries
+version: 0.0.1
+dependencies:
+  codeql/python-all: "*"
+extractor: python
