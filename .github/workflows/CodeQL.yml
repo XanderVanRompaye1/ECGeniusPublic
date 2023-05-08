@@ -39,9 +39,6 @@ jobs:
       uses: github/codeql-action/analyze@v2
       with:
         category: "/language:${{matrix.language}}"
-
-    - name: Call a Bash Script
-      run:  bash ${GITHUB_WORKSPACE}/scripts/example.sh my-folder-name
       
     - name: Download results artifact
       uses: actions/download-artifact@v2
