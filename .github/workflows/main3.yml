@@ -32,14 +32,22 @@ jobs:
 
       - name: Run custom queries
         run: |
-          codeql query run './.github/codeql/custom-queries/pythonfilenames.ql' --database=my-database --output=my-results.bqrs
+          codeql query run './.github/codeql/custom-queries/pythonfilenames.ql' --database=my-database --output=filenames-results.bqrs
+          codeql query run './.github/codeql/custom-queries/advanced.ql' --database=my-database --output=advanced-results.bqrs
 
       - name: Transform .bqrs to JSON with CodeQL CLI
         run: |
-          codeql bqrs decode --format=json --output=my-results.json my-results.bqrs
+          codeql bqrs decode --format=json --output=filenames-results.json filenames-results.bqrs
+          codeql bqrs decode --format=json --output=advanced-results.json advanced-results.bqrs
 
-      - name: Upload results as artifact
+      - name: Upload filename results as artifact
         uses: actions/upload-artifact@v2
         with:
           name: codeql-results
-          path: my-results.json
+          path: filenames-results.json
+
+      - name: Upload advanced results as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeql-results
+          path: advanced-results.json
