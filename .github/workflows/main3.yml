@@ -26,7 +26,8 @@ jobs:
       - name: Test CodeQL CLI configuration
         run: |
           if command -v codeql >/dev/null 2>&1 ; then
-            codeql resolve qlpacks if "$(command -v codeql)" ; 
-          else 
-            "$(pwd)"/codeql/codeql resolve qlpacks ; 
+            codeql resolve qlpacks
+          else
+            "$(pwd)"/codeql/codeql resolve qlpacks
           fi
+
