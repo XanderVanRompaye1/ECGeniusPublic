@@ -1,6 +1,9 @@
 name: CodeQL Analysis 3
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   analyze:
@@ -23,11 +26,21 @@ jobs:
       - name: Install Python 3
         run: sudo apt-get install python3
 
-      - name: Test CodeQL CLI configuration
+      - name: Create CodeQL database
         run: |
-          if command -v codeql >/dev/null 2>&1 ; then
-            codeql resolve qlpacks
-          else
-            "$(pwd)"/codeql/codeql resolve qlpacks
-          fi
+          codeql database create my-database --language=python --source-root=./src
 
+      - name: Run custom queries
+        run: |
+          codeql query run my-custom-query.ql --database=my-database --format=bqrs
+
+      - name: Transform .bqrs to JSON with CodeQL CLI
+        run: |
+          codeql bqrs decode --format=csv --output=my-results.csv my-results.bqrs
+          python3 convert_csv_to_json.py my-results.csv my-results.json
+
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeql-results
+          path: my-results.json
