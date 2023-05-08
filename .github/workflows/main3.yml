@@ -32,7 +32,7 @@ jobs:
 
       - name: Run custom queries
         run: |
-          codeql query run my-custom-query.ql --database=my-database --format=bqrs
+          codeql query run my-custom-query.ql --database=my-database
 
       - name: Transform .bqrs to JSON with CodeQL CLI
         run: |
