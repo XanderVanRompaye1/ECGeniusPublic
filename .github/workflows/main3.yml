@@ -16,6 +16,8 @@ jobs:
           tar -xvzf codeql-bundle-linux64.tar.gz
 
       - name: Add CodeQL CLI to PATH
+        env:
+          envFile: env.list
         run: echo "::add-path::$(pwd)/codeql:$PATH"
 
       - name: Install Python 3
