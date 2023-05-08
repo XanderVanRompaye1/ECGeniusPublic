@@ -1,10 +1,11 @@
 name: "My CodeQL config"
 
-disable-default-queries: true
-
 languages: python
 
 queries:
   - uses: ./codeql/myquery.ql
 packs:
   - codeql/python-queries
+paths-ignore: 
+  - '.streamlit'
+  - '*.md'
