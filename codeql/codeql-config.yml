@@ -8,6 +8,3 @@ queries:
   - uses: ./codeql/myquery.ql
 packs:
   - codeql/python-queries
-paths-ignore: 
-  - '.streamlit'
-  - '*.md'
