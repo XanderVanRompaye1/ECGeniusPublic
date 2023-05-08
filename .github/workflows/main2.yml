@@ -1,45 +1,36 @@
-name: CodeQL analysis 2
+name: CodeQL Analysis 2
 
 on:
   push:
     branches: [main]
 
 jobs:
-  analyze:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
-
-      # Initialize CodeQL tools
+      
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
           languages: python
-
-      # Create CodeQL database
-      - name: Create CodeQL database
-        uses: github/codeql-action/checkout@v2
+      
+      - name: Autobuild changed libraries
+        uses: github/codeql-action/autobuild@v2
+      
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
         with:
-          repository: ${{ github.repository }}
-          ref: ${{ github.sha }}
-      - name: Run custom queries
-        run: |
-          codeql database analyze \\
-            --database=mydatabase \\
-            --output=filenames.bqrs \\
-            --no-sarif-add-snippets \\
-            --format=bqrs \\
-            ./.github/codeql/customqueries/pythonfilenames.ql
-
-      # Use CodeQL CLI command to transform BQRS to JSON
-      - name: Transform BQRS to JSON
-        run: |
-          codeql bqrs decode --format=json <output file>.bqrs > <output file>.json
-
-      # Upload JSON file as artifact
-      - name: Upload JSON artifact
+          # Set the path to the custom queries
+          queries: ./.github/codeql/custom-queries
+          # Set the path to the downloaded codeql database
+          database: ${{ github.workspace }}/db
+          # Set the path to the results directory
+          results-path: ${{ github.workspace }}/results
+      
+      - name: Upload results
         uses: actions/upload-artifact@v2
         with:
           name: codeql-results
-          path: <output file>.json
+          path: ${{ github.workspace }}/results
