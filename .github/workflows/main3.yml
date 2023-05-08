@@ -17,7 +17,7 @@ jobs:
 
       - name: Add CodeQL CLI to PATH
         env:
-          envFile: env.list
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
         run: echo "::add-path::$(pwd)/codeql:$PATH"
 
       - name: Install Python 3
