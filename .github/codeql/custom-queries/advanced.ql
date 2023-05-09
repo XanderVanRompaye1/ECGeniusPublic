@@ -1,5 +1,5 @@
 import python
 
-from File file, Function f
+from File file, Function fun, Import imp
 
-select file.getBaseName(), f.getName()
+select file.getBaseName(), fun.getName(), imp.getAnImportedModuleName()
